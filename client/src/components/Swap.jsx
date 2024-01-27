@@ -7,8 +7,8 @@ import {
 import { Input, Modal } from "antd";
 import TokenList from "../tokenList.json";
 import axios from "axios";
-
-const Swap = () => {
+import {useSendTransaction,useWaitForTransaction} from "wagmi"
+const Swap = (props) => {
   const [tokenOneAmount, setTokenOneAmount] = useState(0);
   const [tokenTwoAmount, setTokenTwoAmount] = useState(0);
   const changeAmount = (e) => {
@@ -19,11 +19,25 @@ const Swap = () => {
       setTokenTwoAmount(null);
     }
   };
+  const {address,isConnected}=props
   const [tokenOne, setTokenOne] = useState(TokenList[0]);
   const [tokenTwo, setTokenTwo] = useState(TokenList[1]);
   const [isOpen, setIsOpen] = useState(false);
   const [changeToken, setChangeToken] = useState(1);
   const [prices, setPrices] = useState(null);
+  const [txDetails,setTxDetails]=useState({
+    to:null,
+    data:null,
+    value:null
+  })
+  const {data,sendTransaction}=useSendTransaction({
+    request:{
+      from:address,
+      to:String(txDetails.to),
+      data:String(txDetails.data),
+      value:String(txDetails.value)
+    }
+  })
 
   const switchTokens = () => {
     setPrices(null);
@@ -59,9 +73,19 @@ const Swap = () => {
     setPrices(res.data);
   };
 
+  const fetchSwap=async()=>{
+    
+  }
+
   useEffect(() => {
     fetchPrices(TokenList[0].address, TokenList[1].address);
   }, []);
+
+  useEffect(()=>{
+    if(txDetails.to && isConnected){
+      sendTransaction()
+    }
+  },[txDetails])
 
   return (
     <>
@@ -120,7 +144,7 @@ const Swap = () => {
               <DownOutlined />
             </div>
           </div>
-          <div className="swapButton" disabled={!tokenOneAmount}>
+          <div className="swapButton cursor-pointer" disabled={!tokenOneAmount || !isConnected}>
             Swap
           </div>
         </div>

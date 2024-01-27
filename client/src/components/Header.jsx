@@ -22,8 +22,8 @@ const Header = (props) => {
     <img src={ETH} alt="" className='w-[20px] h-[20px]' />
     <span className='text-[18px] text-white '>Ethereum</span>
     </div>
-    <div className='text-[#1a264a] text-[18px] font-semibold py-1 px-2 bg-[#a4c8ff94] rounded-full flex justify-center items-center cursor-pointer' onClick={connect}>
-    Connect   
+    <div className='text-[#03050a] text-[18px] font-semibold py-1 px-2 bg-[#5694f0e8] rounded-full flex justify-center items-center cursor-pointer'  onClick={connect}>
+    {isConnected?address.slice(0,5)+"...":"Connect"} 
     </div>
     </div>
     </div>
