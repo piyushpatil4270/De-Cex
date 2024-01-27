@@ -8,17 +8,15 @@ import {metaMask} from "@wagmi/connectors"
 
 function App() {
   const {address,isConnected}=useAccount()
-  const {}=useConnect({
-   
-  })
+  const {connectors,connect}=useConnect()
 
 
   return (
     <div className='gradient-bg-footer w-full h-dvh'>
-      <Header/>
+      <Header connect={connect} isConnected={isConnected} address={address}  />
       <Routes>
-        <Route path="/" Component={Swap}/>
-        <Route path="/tokens" Component={Token} />
+        <Route path="/" element={<Swap isConnected={isConnected} address={address} />}/>
+        <Route path="/tokens" element={<Token />} />
       </Routes>
     </div>
   )

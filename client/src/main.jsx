@@ -7,9 +7,16 @@ import "./index.css";
 import { mainnet } from "wagmi/chains";
 import { WagmiProvider } from "wagmi";
 import {QueryClient,QueryClientProvider} from "@tanstack/react-query"
+import {metaMask} from "@wagmi/connectors";
+
 const config = createConfig({
   chains: [mainnet],
-  transports: {},
+  connectors:[
+   metaMask()
+  ],
+  transports: {
+    [mainnet.id]:http(),
+  },
 });
 const queryClient=new QueryClient()
 const client = ReactDOM.createRoot(document.getElementById("root")).render(
